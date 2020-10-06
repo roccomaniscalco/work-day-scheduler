@@ -37,40 +37,52 @@
       $(document).ready(function () {
         $("#currentDay").text(moment().format("dddd, MMMM Do"));
 
-        //creates 9 time block
+        // iterates 9x
         for (let i = 9; i < 18; i++) {
-          //creates time block
+          // creates time block
           var timeBlock = $("<div>")
             .attr("class", "row")
             .data("militaryTime", i);
 
-          //adds standard time to time block
+          // add standard time to time block
           var standardTime = ((i + 11) % 12) + 1;
           var meridian = "AM";
-          if (standardTime > 11) meridian = "PM";
+          if (i > 11) meridian = "PM";
           timeBlock.append(
             $("<div>")
               .attr("class", "col-md-1 hour")
               .text(standardTime + meridian)
           );
 
-          //adds task to time block
+          // add task description to time block
           var tense = "past";
-          if (timeBlock.data().militaryTime > 12)//moment().hour())
-            tense = "future";
-          else if (timeBlock.data().militaryTime == 12)//moment().hour())
+          if (timeBlock.data("militaryTime") > moment().hour()) tense = "future";
+          else if (timeBlock.data("militaryTime") == moment().hour())
             tense = "present";
-
           timeBlock.append(
             $("<textarea>")
               .attr("class", "col-md-10 description " + tense)
+              .data("index",i)
+              .text(localStorage.getItem("savedText" + i))
           );
 
-          //adds save button to time block
-          timeBlock.append($("<button>").attr("class", "col-md-1 saveBtn btn"));
+          // add save button to time block
+          timeBlock.append(
+            $("<button>")
+              .attr("class", "col-md-1 saveBtn btn")
+              .data("index",i)
+          );
 
+          // add time block to container
           $(".container").append(timeBlock);
         }
+
+        // upon button click -> save text from corresponding textarea
+        $(".container").on("click","button",function(){
+          var textarea = $(this).parent().children("textarea")
+          localStorage.setItem("savedText" + $(this).data("index"),textarea.val());
+          console.log(localStorage);
+        })
       });
     </script>
   </body>
