@@ -62,14 +62,16 @@
           timeBlock.append(
             $("<textarea>")
               .attr("class", "col-md-10 description " + tense)
-              .data("index",i)
+              .attr("aria-label", standardTime + meridian + " task")
               .text(localStorage.getItem("savedText" + i))
+              .data("index",i)
           );
 
           // add save button to time block
           timeBlock.append(
             $("<button>")
               .attr("class", "col-md-1 saveBtn btn")
+              .attr("aria-label", standardTime + meridian + " task save button")
               .data("index",i)
           );
 
