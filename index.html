@@ -31,9 +31,41 @@
     <div class="container">
       <!-- Timeblocks go here -->
     </div>
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="./script.js"></script>
+    <script>
+      $(document).ready(function () {
+        //creates 9 time block
+        for (let i = 0; i < 9; i++) {
+
+          //creates time block 
+          var timeBlock = $("<div>").attr("class", "row");
+
+          //adds standard time to time block 
+          var standardTime = ((i + 20) % 12) + 1;
+          var meridian = "AM";
+          if (standardTime > 11) meridian = "PM";
+          timeBlock.append(
+            $("<div>")
+              .attr("class", "col-md-1 hour")
+              .text(standardTime + meridian)
+          );
+
+          //adds task to time block 
+          timeBlock.append(
+            $("<textarea>")
+              .attr("class", "col-md-10 description")
+          );
+
+          //adds save button to time block
+          timeBlock.append(
+            $("<button>")
+              .attr("class", "col-md-1 saveBtn btn")
+          )
+
+          $(".container").append(timeBlock);
+        }
+      });
+    </script>
   </body>
 </html>
