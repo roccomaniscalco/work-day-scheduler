@@ -35,14 +35,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script>
       $(document).ready(function () {
+        $("#currentDay").text(moment().format("dddd, MMMM Do"));
+
         //creates 9 time block
-        for (let i = 0; i < 9; i++) {
+        for (let i = 9; i < 18; i++) {
+          //creates time block
+          var timeBlock = $("<div>")
+            .attr("class", "row")
+            .data("militaryTime", i);
 
-          //creates time block 
-          var timeBlock = $("<div>").attr("class", "row");
-
-          //adds standard time to time block 
-          var standardTime = ((i + 20) % 12) + 1;
+          //adds standard time to time block
+          var standardTime = ((i + 11) % 12) + 1;
           var meridian = "AM";
           if (standardTime > 11) meridian = "PM";
           timeBlock.append(
@@ -51,17 +54,20 @@
               .text(standardTime + meridian)
           );
 
-          //adds task to time block 
+          //adds task to time block
+          var tense = "past";
+          if (timeBlock.data().militaryTime > 12)//moment().hour())
+            tense = "future";
+          else if (timeBlock.data().militaryTime == 12)//moment().hour())
+            tense = "present";
+
           timeBlock.append(
             $("<textarea>")
-              .attr("class", "col-md-10 description")
+              .attr("class", "col-md-10 description " + tense)
           );
 
           //adds save button to time block
-          timeBlock.append(
-            $("<button>")
-              .attr("class", "col-md-1 saveBtn btn")
-          )
+          timeBlock.append($("<button>").attr("class", "col-md-1 saveBtn btn"));
 
           $(".container").append(timeBlock);
         }
